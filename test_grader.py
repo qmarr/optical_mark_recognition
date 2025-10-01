@@ -5,6 +5,7 @@ import numpy as np
 import argparse
 import imutils
 import cv2
+import json
 
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
@@ -14,13 +15,17 @@ args = vars(ap.parse_args())
 
 # define the answer key which maps the question number
 # to the correct answer
-ANSWER_KEY = {0: 1, 1: 4, 2: 0, 3: 3, 4: 1}
+
+with open("correct_answers.json", "r") as f:
+	ANSWER_KEY = json.load(f)
 
 # load the image, convert it to grayscale, blur it
 # slightly, then find edges
 image = cv2.imread(args["image"])
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+cv2.imshow("Gray", gray)
 blurred = cv2.GaussianBlur(gray, (5, 5), 0)
+cv2.imshow("GaussBlurred", blurred)
 edged = cv2.Canny(blurred, 75, 200)
  
 cv2.imshow("Original", image)
@@ -114,7 +119,7 @@ for (q, i) in enumerate(np.arange(0, len(questionCnts), 5)):
 	# initialize the contour color and the index of the
 	# *correct* answer
 	color = (0, 0, 255)
-	k = ANSWER_KEY[q]
+	k = ANSWER_KEY[str(q)]
 	# check to see if the bubbled answer is correct
 	if k == bubbled[1]:
 		color = (0, 255, 0)
@@ -132,5 +137,5 @@ cv2.putText(paper, "{:.2f}%".format(score), (10, 30),
 out_path = "Exam.png"
 cv2.imshow("Original", image)
 cv2.imwrite(out_path, paper)
-print(f"Result saved to {out_path}")
+print(f"[INFO] Result saved to {out_path}")
 cv2.waitKey(0)
