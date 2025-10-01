@@ -124,9 +124,13 @@ for (q, i) in enumerate(np.arange(0, len(questionCnts), 5)):
 
 	# grab the test taker
 score = (correct / 5.0) * 100
+print(f"Total questions: {len(questionCnts)//5}")
+print(f"Correct answers: {correct}")
 print("[INFO] score: {:.2f}%".format(score))
 cv2.putText(paper, "{:.2f}%".format(score), (10, 30),
 	cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 0, 255), 2)
+out_path = "Exam.png"
 cv2.imshow("Original", image)
-cv2.imshow("Exam", paper)
+cv2.imwrite(out_path, paper)
+print(f"Result saved to {out_path}")
 cv2.waitKey(0)
