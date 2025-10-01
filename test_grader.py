@@ -85,6 +85,7 @@ for c in cnts:
 	if w >= 20 and h >= 20 and ar >= 0.9 and ar <= 1.1:
 		questionCnts.append(c)
 
+
 # sort the question contours top-to-bottom, then initialize
 # the total number of correct answers
 questionCnts = contours.sort_contours(questionCnts,
